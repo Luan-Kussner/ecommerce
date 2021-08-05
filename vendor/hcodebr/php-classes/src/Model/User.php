@@ -14,11 +14,11 @@ class User extends Model
     {
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_user WHERE deslogin = :LOGIN", array(
+        $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
             ":LOGIN"=>$login
         ));
 
-        if (count($results) ===0)
+        if (count($results) === 0)
         {
             throw new \Exception("Usuario inexistente ou senha inválida");
         }
@@ -29,7 +29,7 @@ class User extends Model
       {
           $user = new User();
 
-          $user->setiduser($data["iduser"]);
+          $user->setiduser($data);
 
           $_SESSION[User::SESSION] = $user->getValues();
 
@@ -51,8 +51,8 @@ class User extends Model
             ||
             !(int)$_SESSION[User::SESSION]["iduser"] > 0
             ||
-            (bool)$_SESSION[User::SESSION]["inadmin"] !==$inadmin
-        ){
+            (bool)$_SESSION[User::SESSION]["inadmin"] !== $inadmin
+        ) {
 
             header("Location: /admin/login");
             exit;

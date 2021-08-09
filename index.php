@@ -21,13 +21,15 @@ $app->get('/', function() {
 });
 //pagina admin
 $app->get('/admin', function() {
-
-	User::verifyLogin();
-
-	$page = new PageAdmin();
-
-	$page->setTpl("index");
-    
+	//VERIFICA SE ELE ESTA LOGADO, SE SIM, RENDERIZA A PAGINA ADMIN, SE NÃO, MANDA PARA O LOGIN NOVAMENTE
+	if(User::verifyLogin()){
+		
+		$page = new PageAdmin();
+		$page->setTpl("index");
+	} else {
+		header("Location: /admin/login");
+		exit;
+	}
 });
 //pagina login
 $app->get('/admin/login', function() {

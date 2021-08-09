@@ -12,6 +12,7 @@ class User extends Model
 
     public static function login($login, $password)
     {
+
         $sql = new Sql();
 
         $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
@@ -28,15 +29,10 @@ class User extends Model
       if  (password_verify($password, $data["despassword"]) === true)
       {
           $user = new User();
-
+     
           $user->setiduser($data);
 
           $_SESSION[User::SESSION] = $user->getValues();
-
-          return $user;
-
-          
-
       } else {
         throw new \Exception("Usuario inexistente ou senha inválida");
       }
@@ -51,11 +47,11 @@ class User extends Model
             ||
             !(int)$_SESSION[User::SESSION]["iduser"] > 0
             ||
-            (bool)$_SESSION[User::SESSION]["inadmin"] !== $inadmin
+            $_SESSION[User::SESSION]["iduser"]["inadmin"] !== $inadmin
         ) {
-
-            header("Location: /admin/login");
-            exit;
+           return true;
+        } else {
+            return false;
         }
     }
 

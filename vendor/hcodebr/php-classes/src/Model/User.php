@@ -158,7 +158,12 @@ class User extends Model
              else
              {
                 $dataRecovery = $results2[0];
-                $code = base64_encode(openssl_encrypt(MCRYPT_RIJNDAEL_128, User::SECRET, $dataRecovery["idrecovery"], MCRYPT_MODE_ECB));
+                
+                // $code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0);
+                // var_dump($code); die;
+                $code = openssl_encrypt(MCRYPT_RIJNDAEL_128, User::SECRET, $dataRecovery["idrecovery"], MCRYPT_MODE_ECB);
+
+                $code = base64_encode($code);
 
                 $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
 
